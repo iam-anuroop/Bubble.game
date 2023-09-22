@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+  let score = 0;
+let activeCircles = [];
+
+function createCircle() {
+    if (activeCircles.length < 5) {
+        const circle = document.createElement("div");
+        circle.classList.add("circle");
+
+        // Randomly position the circle horizontally
+        const randomX = Math.random() * window.innerWidth;
+        circle.style.left = randomX + "px";
+
+        // Append the circle to the game container
+        const gameContainer = document.getElementById("game-container");
+        gameContainer.appendChild(circle);
+
+        // Add the circle to the activeCircles array
+        activeCircles.push(circle);
+
+        // Add a click event listener to the circle
+        circle.addEventListener("click", () => {
+            // Increase the score when a circle is clicked
+            score += 5;
+            document.getElementById("score").textContent = score;
+
+            // Remove the clicked circle from the DOM
+            circle.remove();
+
+            // Remove the clicked circle from the activeCircles array
+            const index = activeCircles.indexOf(circle);
+            if (index !== -1) {
+                activeCircles.splice(index, 1);
+            }
+        });
+
+        // Remove the circle from the DOM when the animation ends
+        circle.addEventListener("animationend", () => {
+            circle.remove();
+
+            // Remove the circle from the activeCircles array
+            const index = activeCircles.indexOf(circle);
+            if (index !== -1) {
+                activeCircles.splice(index, 1);
+            }
+        });
+    }
+}
+
+// Create circles at random intervals
+function spawnCircles() {
+    setInterval(createCircle, 3000); // Adjust the interval as needed
+}
+
+// Start the game
+spawnCircles();
+
+    </script>
+
+
+<div class="main">
+    <div class="game" id="game-container">
+        <div class="nav">
+            <div  >
+            <p>Score: <span id="score">0</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <style>
+        /* .game{
+            background: green;
+            position: relative;
+            height: 100vh;
+        }*/
+        .nav{
+            height: 50px;
+            width: 100px;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            /* background: red; */
+        } 
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(14, 14, 237,0.4);
+}
+
+.game {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.circle {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background-color: red;
+    border-radius: 50%;
+    animation: moveCircle 2.5s linear infinite ;
+}
+
+@keyframes moveCircle {
+    0% {
+        transform: translateY(1500%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0.2;
+    }
+}
+
+
+    </style>
+</body>
+</html>
